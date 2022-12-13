@@ -1,0 +1,8 @@
+plugin: community.docker.docker_containers
+docker_host: unix://var/run/docker.sock
+keyed_groups:
+- key: docker_config.Image
+    prefix: image
+  - key: "docker_config.Labels['com.docker.compose.project.working_dir']"
+    prefix: project_dir
+    separator: ""
