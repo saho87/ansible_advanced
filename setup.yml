@@ -1,0 +1,41 @@
+---
+- hosts: webcluster-backend
+  become: True
+tasks:
+  - name: install nginx
+    package:
+name: nginx-1.22.0-4.fc37
+  - name: copy index.html
+    template:
+dest: /usr/share/testpage/index.html
+src: index.html.j2
+
+  - name: start and enable nginx
+    systemd:
+name: nginx
+state: started
+enabled: True
+
+- hosts: webcluster-loadbalancer
+  become: True
+  tasks:
+  - name: install nginx
+    package:
+      name: nginx-1.22.0-4.fc37
+  - name: copy nginx config
+    template:
+      dest: /etc/nginx/nginx.conf
+      src: nginx.conf.j2
+    notify: restart nginx
+  - name: start and enable nginx
+    systemd:
+      name: nginx
+      state: started
+      enabled: True
+
+  handlers:
+  - name: restart nginx
+    systemd:
+      name: nginx
+      state: restarted
+...
