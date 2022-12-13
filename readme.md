@@ -1,3 +1,6 @@
+Eine Aufgabe zum Webcluster aus dem Ansible Advanced Kurs. Hierbei wird ein Loadbalancer mit Round Robin und 3 Webserver konfiguriert.
+Dabei wird in Update eines Webservers simuliert, bei dem dieser aus der Loadbalancer config entfernt wird.
+
 1.8 Webcluster
 1. Erweitern Sie das statische Inventory-File um die Hosts webserver[01:03] und loadbalancer. Die
 Gruppe webcluster-backend soll die Hosts webserver01, webserver02 und webserver03 enthalten
