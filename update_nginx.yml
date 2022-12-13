@@ -1,0 +1,34 @@
+---
+- hosts: webcluster-backend
+  become: True
+  serial: 1
+  tasks:
+  - name: remove host from loadbalancer config
+    lineinfile:
+      path: "/etc/nginx/nginx.conf"
+      line: "# server {{ inventory_hostname }};"
+      regexp: "server {{ inventory_hostname }}"
+    delegate_to: loadbalancer
+  - name: reload loadbalancer
+    systemd:
+      name: nginx
+      state: reloaded
+    delegate_to: loadbalancer
+  - name: pause
+    pause:
+  - name: update nginx
+    package:
+      name: nginx
+      state: latest
+  - name: add host to loadbalancer config
+    lineinfile:
+      path: "/etc/nginx/nginx.conf"
+	  line: " server {{ inventory_hostname }};"
+	  regexp: "server {{ inventory_hostname }}"
+    delegate_to: loadbalancer
+  - name: reload loadbalancer
+    systemd:
+      name: nginx
+      state: reloaded
+    delegate_to: loadbalancer
+...

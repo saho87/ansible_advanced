@@ -1,0 +1,22 @@
+user nginx;
+worker_processes auto;
+error_log /var/log/nginx/error.log notice;
+pid /run/nginx.pid;
+include /usr/share/nginx/modules/*.conf;
+events {
+    worker_connections 1024;
+}
+
+http {
+  upstream webserver {
+    server webserver01;
+    server webserver02;
+    server webserver03;
+  }
+  server {
+    listen 80;
+    location / {
+proxy_pass http://webserver;
+    }
+  }
+}
